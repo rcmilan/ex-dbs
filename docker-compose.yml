@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+    app:
+        image: ${DOCKER_REGISTRY-}app
+        build:
+            context: .
+            dockerfile: app/Dockerfile
+        depends_on:
+            - redis
+        networks:
+            - default
+            
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+        networks:
+            - default
+
+
+networks:
+  default:
+    driver: bridge
+    name: db_network

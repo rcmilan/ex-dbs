@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["app/app.csproj", "app/"]
+COPY ["infra.cache/infra.cache.csproj", "infra.cache/"]
+COPY ["model/model.csproj", "model/"]
 RUN dotnet restore "app/app.csproj"
 COPY . .
 WORKDIR "/src/app"

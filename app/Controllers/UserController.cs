@@ -9,7 +9,7 @@ namespace app.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private ICacheService<User, Guid> _cacheService;
+        private readonly ICacheService<User, Guid> _cacheService;
 
         public UserController(ICacheService<User, Guid> cacheService)
         {
@@ -20,6 +20,12 @@ namespace app.Controllers
         public Task<User> Post(User user)
         {
             return _cacheService.Save(user);
+        }
+
+        [HttpGet]
+        public Task<User> Get(Guid ID)
+        {
+            return _cacheService.Get(ID);
         }
     }
 }
