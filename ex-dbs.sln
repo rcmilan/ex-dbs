@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app", "app\app.csproj", "{4CD3E910-5922-4935-91C1-1419C98EF906}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{4CD3E910-5922-4935-91C1-1419C98EF906}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infra.cache", "infra.cache\infra.cache.csproj", "{0633EAE1-BA1D-472C-AFDD-12AC1B365F1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infra.cache", "infra.cache\infra.cache.csproj", "{0633EAE1-BA1D-472C-AFDD-12AC1B365F1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model", "model\model.csproj", "{99F35E79-B274-4B0E-8507-0D92FFB512A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model", "model\model.csproj", "{99F35E79-B274-4B0E-8507-0D92FFB512A6}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{395A687F-9424-43C2-94D0-5878D87B8A1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infra.document", "infra.document\infra.document.csproj", "{EE75BFE0-4B91-4060-8591-16DB584E359B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{395A687F-9424-43C2-94D0-5878D87B8A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{395A687F-9424-43C2-94D0-5878D87B8A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{395A687F-9424-43C2-94D0-5878D87B8A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE75BFE0-4B91-4060-8591-16DB584E359B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE75BFE0-4B91-4060-8591-16DB584E359B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE75BFE0-4B91-4060-8591-16DB584E359B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE75BFE0-4B91-4060-8591-16DB584E359B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
