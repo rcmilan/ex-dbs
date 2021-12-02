@@ -7,7 +7,7 @@
             CreatedAt = CreatedAt == DateTime.MinValue ? DateTime.Now : CreatedAt;
         }
 
-        public T ID { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public virtual T ID { get; set; }
+        public virtual DateTime CreatedAt { get; set; }
     }
 }

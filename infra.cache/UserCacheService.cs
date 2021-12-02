@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace infra.cache
 {
-    public class UserCacheService : ICacheService<User, Guid>
+    public class UserCacheService : ICacheRepository<User, Guid>
     {
         private readonly IConnectionMultiplexer _connMultiplexer;
         private readonly IDatabase _cacheDb;
@@ -23,7 +23,7 @@ namespace infra.cache
             return res.IsNull ? default : JsonConvert.DeserializeObject<User>(res);
         }
 
-        public async Task<User> Save(User user)
+        public async Task<User> Add(User user)
         {
             await _cacheDb.StringSetAsync(user.ID.ToString(), JsonConvert.SerializeObject(user));
 
