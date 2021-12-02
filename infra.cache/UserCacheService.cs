@@ -4,14 +4,15 @@ using StackExchange.Redis;
 
 namespace infra.cache
 {
-    public class CacheService : ICacheService<User, Guid>
+    public class UserCacheService : ICacheService<User, Guid>
     {
         private readonly IConnectionMultiplexer _connMultiplexer;
         private readonly IDatabase _cacheDb;
 
-        public CacheService(IConnectionMultiplexer connectionMultiplexer)
+        public UserCacheService(IConnectionMultiplexer connectionMultiplexer)
         {
             _connMultiplexer = connectionMultiplexer;
+
             _cacheDb = _connMultiplexer.GetDatabase();
         }
 
