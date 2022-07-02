@@ -5,7 +5,7 @@ module Graph =
     open Types
     open Neo4jClient
     
-    let connString =  @"http://neo4j:7474"
+    let connString = @"http://neo4j:7474/"
     let userName = "neo4j"
     let password = "test"
 

@@ -8,14 +8,6 @@ namespace app.Controllers
     [ApiController]
     public class GraphController : ControllerBase
     {
-        //[HttpGet]
-        //public IActionResult Get(string name)
-        //{
-        //    var x = Say.hello(name);
-
-        //    return Ok(x);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
