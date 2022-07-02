@@ -20,7 +20,6 @@ namespace infra.embed
                 new Subscriber("Sub3", "Sub3@email.com")
                 );
 
-
             base.OnModelCreating(modelBuilder);
         }
     }

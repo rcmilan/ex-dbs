@@ -1,5 +1,4 @@
 ﻿using infra.document;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using model.Entities;
 using MongoDB.Bson;
