@@ -4,12 +4,10 @@ module Graph =
     open System
     open Types
     open Neo4jClient
-    open Neo4jClient.Cypher
-    //open FSharp.Configuration
-
-    let connString = ""
-    let userName = ""
-    let password = ""
+    
+    let connString =  @"http://neo4j:7474"
+    let userName = "neo4j"
+    let password = "test"
 
     let neo4jClient = new GraphClient(new Uri(connString), userName, password)
 

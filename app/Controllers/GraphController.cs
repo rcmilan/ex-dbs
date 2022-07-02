@@ -15,5 +15,15 @@ namespace app.Controllers
 
         //    return Ok(x);
         //}
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var neo4jClient = Graph.neo4jClient;
+
+            await neo4jClient.ConnectAsync();
+
+            return Ok();
+        }
     }
 }
