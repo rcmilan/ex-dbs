@@ -1,5 +1,4 @@
 ﻿using infra.graph;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
@@ -11,9 +10,10 @@ namespace app.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var neo4jClient = Graph.neo4jClient;
+            var label = Types.Label.START;
+            var node = new Types.IVRNode(label, new Types.NodeProperties(1, "title", "msg", 0));
 
-            await neo4jClient.ConnectAsync();
+            Graph.createNode(node).Wait();
 
             return Ok();
         }

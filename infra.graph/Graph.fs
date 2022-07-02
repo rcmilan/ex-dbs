@@ -15,17 +15,17 @@ module Graph =
 
     let nodeLabel node =
         match node.Label with
-            | START -> Types.Label.START
-            | END -> Types.Label.END
-            | ENTRY -> Types.Label.ENTRY
-            | RETRY -> Types.Label.RETRY
-//            | RESPONSE -> Types.Label.RESPONSE //NOT yet a part of the schema
+            | START -> Types.Label.START.ToString()
+            | END -> Types.Label.END.ToString()
+            | ENTRY -> Types.Label.ENTRY.ToString()
+            | RETRY -> Types.Label.RETRY.ToString()
+            | RESPONSE -> Types.Label.RESPONSE.ToString() //NOT yet a part of the schema
 
     let relationshipType rel =
         match rel with
-            | GOTO -> Types.Relationship.GOTO
-            | FAIL -> Types.Relationship.FAIL
-            | SUCCESS -> Types.Relationship.SUCCESS
+            | GOTO -> Types.Relationship.GOTO.ToString()
+            | FAIL -> Types.Relationship.FAIL.ToString()
+            | SUCCESS -> Types.Relationship.SUCCESS.ToString()
 
     let cypherMergeNode label alias =
         sprintf "(%s:%s {id: {id}, title: {title}, message: {message}, retries: {retries} })" alias label
