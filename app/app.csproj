@@ -22,6 +22,7 @@
     <ProjectReference Include="..\infra.cache\infra.cache.csproj" />
     <ProjectReference Include="..\infra.document\infra.document.csproj" />
     <ProjectReference Include="..\infra.embed\infra.embed.csproj" />
+    <ProjectReference Include="..\infra.graph\infra.graph.fsproj" />
   </ItemGroup>
 
 </Project>
