@@ -7,13 +7,17 @@ namespace app.Controllers
     [ApiController]
     public class GraphController : ControllerBase
     {
+        public GraphController()
+        {
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var label = Types.Label.START;
-            var node = new Types.IVRNode(label, new Types.NodeProperties(1, "title", "msg", 0));
+            Person x = new("name", "account");
 
-            Graph.createNode(node).Wait();
+            await Graph.addPerson(x);
 
             return Ok();
         }

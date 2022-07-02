@@ -1,70 +1,46 @@
 ﻿namespace infra.graph
 
+open System
+open Neo4jClient
+
+[<CLIMutable>]
+type Person = { Name : string; Twitter : string }
+
+[<CLIMutable>]
+type KnowsData = { Details : string }
+
+type FollowRelationship(target) =
+    inherit Relationship(target)
+    interface IRelationshipAllowingSourceNode<Person>
+    interface IRelationshipAllowingTargetNode<Person>
+
+    override this.RelationshipTypeKey
+        with get() = "follows"
+
+type KnowsRelationship(target, data) =
+    inherit Relationship(target, data)
+    interface IRelationshipAllowingSourceNode<Person>
+    interface IRelationshipAllowingTargetNode<Person>
+
+    override this.RelationshipTypeKey
+        with get() = "knows"
+
 module Graph =
-    open System
-    open Neo4jClient
-
-    open Types
-
-    [<Literal>]
     let connString = @"http://neo4j:7474/"
     let userName = "neo4j"
     let password = "test"
 
-    let neo4jClient = new GraphClient(new Uri(connString), userName, password)
+    let client = new GraphClient(new Uri(connString), userName, password)
 
-    let nodeLabel node =
-        match node.Label with
-            | START -> Types.Label.START.ToString()
-            | END -> Types.Label.END.ToString()
-            | ENTRY -> Types.Label.ENTRY.ToString()
-            | RETRY -> Types.Label.RETRY.ToString()
-            | RESPONSE -> Types.Label.RESPONSE.ToString() //NOT yet a part of the schema
+    let connect =
+        client.ConnectAsync()
 
-    let relationshipType rel =
-        match rel with
-            | GOTO -> Types.Relationship.GOTO.ToString()
-            | FAIL -> Types.Relationship.FAIL.ToString()
-            | SUCCESS -> Types.Relationship.SUCCESS.ToString()
+    let addPerson (person : Person) =
 
-    let cypherMergeNode label alias =
-        sprintf "(%s:%s {id: {id}, title: {title}, message: {message}, retries: {retries} })" alias label
-
-    let cypherGetNode node alias =
-        sprintf "(%s:%s)" (nodeLabel node) alias
-
-    let createNode (node:IVRNode) =
-        neo4jClient.ConnectAsync()
-
-        let inline (=>) a b = a, box b
-        let nodeProperties =  node.Properties
-
-        neo4jClient.Cypher
-            .Merge(cypherMergeNode (nodeLabel node) "a")
-            .OnCreate()
-            .Set("a = {nodeProperties}")
-            .WithParams(dict [
-                            "id" => nodeProperties.id
-                            "title" => nodeProperties.title
-                            "message" => nodeProperties.message
-                            "retries" => nodeProperties.retries
-                            "nodeProperties" => nodeProperties
-                        ])
-            .ExecuteWithoutResultsAsync()
-
-    let deleteNode (node:IVRNode) =
-        neo4jClient.Cypher
-            .OptionalMatch(sprintf "(n:%s)<-[r]-()" (nodeLabel node))
-            .Where(fun (n:NodeProperties) -> n.id = node.Properties.id)
-            .Delete("r, n") //deletes all incoming relationships
-            .ExecuteWithoutResultsAsync()
-
-    let createRelationship (path:IVRPath) =
-        let node1, rel, node2 = path
-
-        neo4jClient.Cypher
-            .Match(cypherGetNode node1 "n1", cypherGetNode node2 "n2")
-            .Where(fun (n1:NodeProperties) -> n1.id = node1.Properties.id)
-            .AndWhere(fun (n2:NodeProperties) -> n2.id = node2.Properties.id)
-            .CreateUnique(sprintf "n1-[:%s]-n2" (relationshipType rel))
-            .ExecuteWithoutResultsAsync()
+        if not client.IsConnected then
+            connect
+        else
+            client.Cypher
+                .Create("(p:Person $person)")
+                .WithParam("person", person)
+                .ExecuteWithoutResultsAsync()
