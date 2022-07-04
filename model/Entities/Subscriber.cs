@@ -4,7 +4,6 @@
     {
         public Subscriber()
         {
-
         }
 
         public Subscriber(string name, string email)

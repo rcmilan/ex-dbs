@@ -3,26 +3,41 @@ version: '3.4'
 services:
     app:
         image: ${DOCKER_REGISTRY-}app
+        container_name: appdbs
         build:
             context: .
             dockerfile: app/Dockerfile
         depends_on:
             - redis
             - mongo
+            - neo4j
         networks:
             - default
-            
+
     redis:
         image: redis
+        container_name: redis
         ports:
             - "6379:6379"
         networks:
             - default
-            
+
     mongo:
         image: mongo
+        container_name: mongo
         ports:
             - "27017:27017"
+        networks:
+            - default
+        
+    neo4j:
+        image: neo4j
+        container_name: neo4j
+        ports:
+            - 7474:7474
+            - 7687:7687
+        environment:
+            NEO4J_AUTH: neo4j/test
         networks:
             - default
 

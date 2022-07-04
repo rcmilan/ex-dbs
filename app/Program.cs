@@ -1,6 +1,7 @@
 using infra.cache;
 using infra.document;
 using infra.embed;
+using infra.graph;
 using Microsoft.EntityFrameworkCore;
 using model.Entities;
 using MongoDB.Bson;
@@ -23,6 +24,21 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(sp => new MongoClient(c
 
 // SQLite
 builder.Services.AddDbContext<EmbedContext>(options => options.UseSqlite(configuration["ConnectionStrings:SQLite:Endpoint"]));
+
+// Neo4j
+builder.Services.AddScoped(opt =>
+{
+    var client = new GraphDbClient(
+        new Uri(configuration["ConnectionStrings:Neo4j:Endpoint"]),
+        "neo4j", "test"
+    );
+
+    client.Client
+        .ConnectAsync()
+        .Wait();
+
+    return client;
+});
 
 // DI
 builder.Services.AddScoped<ICacheRepository<User, Guid>, UserCacheService>();
