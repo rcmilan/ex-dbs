@@ -50,6 +50,14 @@ namespace app.Controllers
             return Ok(person);
         }
 
+        [HttpGet("{personId}")]
+        private async Task<IActionResult> Get(Guid personId)
+        {
+            var result = await GetById(personId);
+
+            return Ok(result);
+        }
+
         private async Task<Models.Person?> GetById(Guid personId)
         {
             var targetAccount = await _graphClient.Cypher.Match("(p:Person)")
