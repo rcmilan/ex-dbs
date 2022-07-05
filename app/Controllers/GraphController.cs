@@ -18,17 +18,25 @@ namespace app.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow(Guid targetId, Guid followerId)
         {
-            var target = await Get(targetId);
-            var follower = await Get(followerId);
+            var target = await GetById(targetId);
+            var follower = await GetById(followerId);
 
             await _graphClient
                 .Cypher
                 .Merge("(target:Person $target)").WithParam("target", target)
                 .Merge("(follower:Person $follower)").WithParam("follower", follower)
-                .Create("(follower)-[r: Follows]->(target)")
+                .Create("(follower)-[rel:Follows]->(target)")
                 .ExecuteWithoutResultsAsync();
 
             return Ok();
+        }
+
+        [HttpGet("{personId}")]
+        public async Task<IActionResult> Get(Guid personId)
+        {
+            var result = await GetById(personId);
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -45,18 +53,10 @@ namespace app.Controllers
             return Ok(person);
         }
 
-        [HttpGet("{personId}")]
-        private async Task<IActionResult> Get(Guid personId)
-        {
-            var result = await GetById(personId);
-
-            return Ok(result);
-        }
-
         private async Task<Models.Person?> GetById(Guid personId)
         {
             var targetAccount = await _graphClient.Cypher.Match("(p:Person)")
-                            .Where((Models.Person p) => p.Id.Equals(personId))
+                            .Where((Models.Person p) => p.Id == personId)
                             .Return(p => p.As<Models.Person>())
                             .ResultsAsync;
 
