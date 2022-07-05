@@ -23,7 +23,7 @@ namespace app.Controllers
                 .Match("(follower:Person)", "(target:Person)")
                 .Where((Models.Person follower) => follower.Id == followerId)
                 .AndWhere((Models.Person target) => target.Id == targetId)
-                .Create("(follower)-[rel:FOLLOWS]->(target)")
+                .Create("(follower)-[rel:FOLLOWS $relParam]->(target)").WithParam("relParam", new { FollowDate = DateTime.Now })
                 .ExecuteWithoutResultsAsync();
 
             return Ok();
