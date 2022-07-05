@@ -26,19 +26,7 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(sp => new MongoClient(c
 builder.Services.AddDbContext<EmbedContext>(options => options.UseSqlite(configuration["ConnectionStrings:SQLite:Endpoint"]));
 
 // Neo4j
-builder.Services.AddScoped(opt =>
-{
-    var client = new GraphDbClient(
-        new Uri(configuration["ConnectionStrings:Neo4j:Endpoint"]),
-        "neo4j", "test"
-    );
-
-    client.Client
-        .ConnectAsync()
-        .Wait();
-
-    return client;
-});
+builder.Services.AddGraphModule(new ModuleDependency.Connection(configuration["ConnectionStrings:Neo4j:Endpoint"], "neo4j", "test"));
 
 // DI
 builder.Services.AddScoped<ICacheRepository<User, Guid>, UserCacheService>();

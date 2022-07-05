@@ -8,11 +8,11 @@ namespace app.Controllers
     [ApiController]
     public class GraphController : ControllerBase
     {
-        private readonly GraphClient _graphClient;
+        private readonly ICypherGraphClient _graphClient;
 
-        public GraphController(GraphDbClient graphDbClient)
+        public GraphController(ICypherGraphClient graphClient)
         {
-            this._graphClient = graphDbClient.Client;
+            this._graphClient = graphClient;
         }
 
         [HttpPost("follow")]
@@ -48,14 +48,6 @@ namespace app.Controllers
                 .ExecuteWithoutResultsAsync();
 
             return Ok(person);
-        }
-
-        [HttpGet("{personId}")]
-        private async Task<IActionResult> Get(Guid personId)
-        {
-            var result = await GetById(personId);
-
-            return Ok(result);
         }
 
         private async Task<Models.Person?> GetById(Guid personId)
