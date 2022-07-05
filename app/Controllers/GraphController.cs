@@ -18,7 +18,8 @@ namespace app.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow(Guid targetId, Guid followerId)
         {
-            await _graphClient.Cypher
+            await _graphClient
+                .Cypher
                 .Match("(follower:Person)", "(target:Person)")
                 .Where((Models.Person follower) => follower.Id == followerId)
                 .AndWhere((Models.Person target) => target.Id == targetId)
@@ -52,10 +53,12 @@ namespace app.Controllers
 
         private async Task<Models.Person?> GetById(Guid personId)
         {
-            var targetAccount = await _graphClient.Cypher.Match("(p:Person)")
-                            .Where((Models.Person p) => p.Id == personId)
-                            .Return(p => p.As<Models.Person>())
-                            .ResultsAsync;
+            var targetAccount = await _graphClient
+                .Cypher
+                .Match("(p:Person)")
+                .Where((Models.Person p) => p.Id == personId)
+                .Return(p => p.As<Models.Person>())
+                .ResultsAsync;
 
             return targetAccount.ToList().FirstOrDefault();
         }

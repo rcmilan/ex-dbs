@@ -1,11 +1,11 @@
 ﻿namespace infra.graph
 
-    open System
-    open Microsoft.Extensions.DependencyInjection
-    open Neo4jClient
-    
     [<System.Runtime.CompilerServices.Extension>]
     module ModuleDependency =
+
+        open System
+        open Microsoft.Extensions.DependencyInjection
+        open Neo4jClient
 
         type Connection = { ConnectionString : string; User : string; Password : string }
 
