@@ -23,7 +23,7 @@ namespace app.Controllers
                 .Match("(follower:Person)", "(target:Person)")
                 .Where((Models.Person follower) => follower.Id == followerId)
                 .AndWhere((Models.Person target) => target.Id == targetId)
-                .CreateUnique("(follower)-[rel:FOLLOWS]->(target)")
+                .Create("(follower)-[rel:FOLLOWS]->(target)")
                 .ExecuteWithoutResultsAsync();
 
             return Ok();
