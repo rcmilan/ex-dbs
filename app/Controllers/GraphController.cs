@@ -18,14 +18,11 @@ namespace app.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow(Guid targetId, Guid followerId)
         {
-            var target = await GetById(targetId);
-            var follower = await GetById(followerId);
-
-            await _graphClient
-                .Cypher
-                .Merge("(target:Person $target)").WithParam("target", target)
-                .Merge("(follower:Person $follower)").WithParam("follower", follower)
-                .Create("(follower)-[rel:Follows]->(target)")
+            await _graphClient.Cypher
+                .Match("(follower:Person)", "(target:Person)")
+                .Where((Models.Person follower) => follower.Id == followerId)
+                .AndWhere((Models.Person target) => target.Id == targetId)
+                .Create("(follower)-[rel:FOLLOWS]->(target)")
                 .ExecuteWithoutResultsAsync();
 
             return Ok();
