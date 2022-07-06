@@ -18,15 +18,17 @@ namespace app.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow(Guid targetId, Guid followerId)
         {
-            await _graphClient
+            var results = await _graphClient
                 .Cypher
                 .Match("(follower:Person)", "(target:Person)")
                 .Where((Models.Person follower) => follower.Id == followerId)
                 .AndWhere((Models.Person target) => target.Id == targetId)
-                .Create("(follower)-[rel:FOLLOWS $relParam]->(target)").WithParam("relParam", new { FollowDate = DateTime.Now })
-                .ExecuteWithoutResultsAsync();
+                .Create("(follower)-[rel:FOLLOWS $relParam]->(target)")
+                    .WithParam("relParam", new { FollowDate = DateTime.Now, FollowId = Guid.NewGuid() })
+                .Return((follower, target) => new { Follower = follower.As<Models.Person>(), Target = target.As<Models.Person>() })
+                .ResultsAsync;
 
-            return Ok();
+            return Ok(results);
         }
 
         [HttpGet("{personId}")]
@@ -42,13 +44,14 @@ namespace app.Controllers
         {
             Models.Person person = new(Guid.NewGuid(), name, account);
 
-            await _graphClient
+            var results = await _graphClient
                 .Cypher
                 .Create("(p:Person $person)")
                 .WithParam("person", person)
-                .ExecuteWithoutResultsAsync();
+                .Return(p => p.As<Models.Person>())
+                .ResultsAsync;
 
-            return Ok(person);
+            return Ok(results);
         }
 
         private async Task<Models.Person?> GetById(Guid personId)
