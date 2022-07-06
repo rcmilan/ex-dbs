@@ -1,4 +1,5 @@
 ﻿using infra.graph.models;
+using infra.graph.relationships;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 
@@ -25,7 +26,7 @@ namespace app.Controllers
                     .AndWhere((Person target) => target.Id == targetId)
                 .Create("(follower)-[rel:Follows $relParam]->(target)")
                     .WithParam("relParam", new FollowInfo(Guid.NewGuid(), DateTime.Now))
-                .Return((follower, target) => new { Follower = follower.As<Person>(), Target = target.As<Person>() })
+                .Return((follower, rel, target) => new FollowerRelationship(target.As<Person>(), rel.As<FollowInfo>(), follower.As<Person>()))
                 .ResultsAsync;
 
             return Ok(results);
