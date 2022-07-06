@@ -1,7 +1,6 @@
-﻿namespace infra.graph
+﻿namespace infra.graph.models
 
-    module Models =
-        open System
+open System
 
-        [<CLIMutable>]
-        type Person = { Id : Guid; Name : string; Account : string }
+[<CLIMutable>]
+type Person = { Id : Guid; Name : string; Account : string }
