@@ -6,6 +6,7 @@
         open System
         open Microsoft.Extensions.DependencyInjection
         open Neo4jClient
+        open infra.graph.service
 
         type Connection = { ConnectionString : string; User : string; Password : string }
 
@@ -16,4 +17,6 @@
 
             client.ConnectAsync().Wait()
 
-            services.AddSingleton<ICypherGraphClient>(client)
+            services
+                .AddSingleton<ICypherGraphClient>(client)
+                .AddScoped<IMyGraphService, MyGraphService>()

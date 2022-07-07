@@ -1,5 +1,6 @@
 ﻿using infra.graph.models;
 using infra.graph.relationships;
+using infra.graph.service;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 
@@ -10,10 +11,12 @@ namespace app.Controllers
     public class GraphController : ControllerBase
     {
         private readonly ICypherGraphClient _graphClient;
+        private readonly IMyGraphService _graphService;
 
-        public GraphController(ICypherGraphClient graphClient)
+        public GraphController(ICypherGraphClient graphClient, IMyGraphService graphService)
         {
-            this._graphClient = graphClient;
+            _graphClient = graphClient;
+            _graphService = graphService;
         }
 
         [HttpPost("follow")]
@@ -57,12 +60,7 @@ namespace app.Controllers
 
         private async Task<Person?> GetById(Guid personId)
         {
-            var targetAccount = await _graphClient
-                .Cypher
-                .Match("(p:Person)")
-                .Where((Person p) => p.Id == personId)
-                .Return(p => p.As<Person>())
-                .ResultsAsync;
+            var targetAccount = await _graphService.Get(personId);
 
             return targetAccount.ToList().FirstOrDefault();
         }
